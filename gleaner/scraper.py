@@ -20,8 +20,7 @@ class Gleaner:
             links = self.filter_and_parse_links(links, url)
 
             self.de.extendleft(links)
-            pprint(links)
-            print(len(self.de))
+
         return self.visited
 
     def get_a_links(self, url):
@@ -51,9 +50,3 @@ class Gleaner:
                 res.append(normalized_link)
                 self.visited.append(normalized_link)
         return res
-
-
-def pprint(l):
-    for ll in l:
-        print(ll)
-    print()
