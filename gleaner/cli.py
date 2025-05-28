@@ -13,8 +13,13 @@ def main():
 
     print(f"Gleaning: {args.url}")
     gleaner = Gleaner(start_url=args.url, output_file=args.output)
-    gleaner.scrape()
-    print(f"Output save to {args.output}")
+    pages = gleaner.scrape()
+    pages = sorted(pages)
+
+    with open(args.output, "w") as file:
+        for page in pages:
+            file.write(page + "\n")
+    print(f"Output saved to {args.output}")
 
 
 if __name__ == "__main__":
