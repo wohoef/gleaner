@@ -22,6 +22,7 @@ class Gleaner:
             self.de.extendleft(links)
             pprint(links)
             print(len(self.de))
+        return self.visited
 
     def get_a_links(self, url):
         links = []
@@ -46,10 +47,9 @@ class Gleaner:
                 parsed_link._replace(fragment="")
             )
 
-            res.append(
-                normalized_link
-            ) if normalized_link not in self.visited else ...
-            self.visited.append(normalized_link)
+            if normalized_link not in self.visited:
+                res.append(normalized_link)
+                self.visited.append(normalized_link)
         return res
 
 
