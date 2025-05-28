@@ -2,7 +2,7 @@
 # Entry point for gleaning
 import argparse
 
-from .scraper import Gleaner
+from scraper import Gleaner
 
 
 def main():
