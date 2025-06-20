@@ -14,7 +14,7 @@ def main():
 
     # Glean
     print(f"Gleaning: {args.url}")
-    gleaner = Gleaner(start_url=args.url, output_file=args.output)
+    gleaner = Gleaner(start_url=args.url)
     pages = gleaner.scrape()
     pages = sorted(pages)
 
