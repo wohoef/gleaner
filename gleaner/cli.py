@@ -2,19 +2,37 @@
 # Entry point for gleaning
 import argparse
 
+from .helpers import RateLimiter
 from .scraper import Gleaner
 
 
 def main():
     # Parse url and output file
     parser = argparse.ArgumentParser()
+
     parser.add_argument("url")
-    parser.add_argument("-o", "--output", default="urls.txt")
+    parser.add_argument(
+        "-o",
+        "--output",
+        default="urls.txt",
+        help="Output file for urls (default: urls.txt)",
+    )
+    parser.add_argument(
+        "-r",
+        "--rps",
+        default=10,
+        help="Maximum requests per second",
+        type=int,
+    )
+
     args = parser.parse_args()
+
+    # Get rate limiter
+    rate_limiter = RateLimiter(rps=args.rps)
 
     # Glean
     print(f"Gleaning: {args.url}")
-    gleaner = Gleaner(start_url=args.url)
+    gleaner = Gleaner(start_url=args.url, rate_limiter=rate_limiter)
     pages = gleaner.scrape()
     pages = sorted(pages)
 

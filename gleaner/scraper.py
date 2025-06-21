@@ -15,13 +15,15 @@ class Gleaner:
     on all these hyperlinks creating a BFS search of the page.
     """
 
-    def __init__(self, start_url):
+    def __init__(self, start_url, rate_limiter):
         self.start_url = start_url
         # strips the url: https://example.com/page/path -> https://example.com
         self.base_url = urllib.parse.urlparse(start_url).netloc
         self.de = deque([start_url])
         # Avoid gleaning same pages
         self.visited = [start_url]
+
+        self.rate_limiter = rate_limiter
 
     def scrape(self):
         """
@@ -50,6 +52,7 @@ class Gleaner:
         TODO: This will miss a lot of links. Especially to images and such.
         """
         links = []
+        self.rate_limiter.wait()
         response = requests.get(url)
 
         # Parse page
