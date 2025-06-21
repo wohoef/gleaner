@@ -30,6 +30,7 @@ class Gleaner:
             url = self.de.pop()
             links = self.get_a_links(url)
             links = self.filter_and_parse_links(links, url)
+            self.visited += links
 
             self.de.extendleft(links)
 
@@ -49,6 +50,10 @@ class Gleaner:
         # Obtain hrefs
         for a_tag in soup.find_all("a"):
             link = a_tag.get("href")
+            if not link:  # Skip if a tag doesn't have href attribute
+                continue
+            if link.endswith(".xml"):
+                continue
             links.append(link)
 
         return links
@@ -80,5 +85,4 @@ class Gleaner:
             # Make sure normalized_link wasn't visited. Then process it
             if normalized_link not in self.visited:
                 res.append(normalized_link)
-                self.visited.append(normalized_link)
         return res
