@@ -17,7 +17,7 @@ glean https://example.com -o output.txt
 This will
 
 - Start at given URL
-- Find all links that point to pages on the same domain
+- Search through HTML to find pages on the same domain
 - Follow those links and repeat the process
 - Save all discovered URLs to output.txt
 
