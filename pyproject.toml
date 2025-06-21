@@ -4,6 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gleaner"
+license = "MIT"
 description = "Web scraper that finds all pages on a domain"
 dependencies = [
     "requests",
