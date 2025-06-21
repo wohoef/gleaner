@@ -47,7 +47,7 @@ class Gleaner:
     def get_a_links(self, url):
         """
         Returns the hrefs of ALL a tags.
-        TODO: This will miss a lot of links. Especially to images such.
+        TODO: This will miss a lot of links. Especially to images and such.
         """
         links = []
         response = requests.get(url)
