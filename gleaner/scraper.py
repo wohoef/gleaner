@@ -3,6 +3,7 @@ from collections import deque
 
 import requests
 from bs4 import BeautifulSoup
+from tqdm import tqdm
 
 
 class Gleaner:
@@ -26,6 +27,8 @@ class Gleaner:
         """
         Performs the BFS
         """
+        pbar = tqdm(total=len(self.visited), desc="Scraping", unit=" pages ")
+
         while len(self.de) > 0:
             url = self.de.pop()
             links = self.get_a_links(url)
@@ -34,6 +37,11 @@ class Gleaner:
 
             self.de.extendleft(links)
 
+            # Update progress bar
+            pbar.total = len(self.visited)
+            pbar.update(1)
+            pbar.refresh()
+        pbar.close()
         return self.visited
 
     def get_a_links(self, url):
