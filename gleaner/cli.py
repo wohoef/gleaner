@@ -1,6 +1,7 @@
 # Handles arg parsing
 # Entry point for gleaning
 import argparse
+import logging
 
 from .helpers import RateLimiter
 from .scraper import Gleaner
@@ -24,11 +25,21 @@ def main():
         help="Maximum requests per second",
         type=int,
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action="store_true",
+        help="Enable verbose output",
+    )
 
     args = parser.parse_args()
 
     # Get rate limiter
     rate_limiter = RateLimiter(rps=args.rps)
+
+    # Define verbosity
+    if args.verbose:
+        logging.basicConfig(level="INFO")
 
     # Glean
     print(f"Gleaning: {args.url}")

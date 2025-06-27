@@ -1,3 +1,4 @@
+import logging
 import urllib
 from collections import deque
 
