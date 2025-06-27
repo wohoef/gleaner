@@ -28,4 +28,12 @@ This will
 ## Limitations
 
 - Only follows `<a>`-tag links
-- No rate limiting
+- Doesn't read `robots.txt`
+- No user-agent header
+- Duplication bug
+- Doesn't handle 429 errors (too many requests)
+- Doesn't parse sitemap.xml
+- No export formats beyond `.txt` (json? csv?)
+- Only works for entire domains. You can't glean an individual page and all sub-pages
+- Doesn't store progress for larger sites where scraping might last more than a few minutes
+- No concurrent processing
