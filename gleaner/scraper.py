@@ -38,8 +38,8 @@ class Gleaner:
         while len(self.de) > 0:
             url = self.de.pop()
             links = self.get_a_links(url)
-            links = self.filter_and_parse_links(links, url)
-            self.visited.update(links)
+            links = set(self.filter_and_parse_links(links, url))
+            self.visited = self.visited.union(links)
 
             self.de.extendleft(links)
 
