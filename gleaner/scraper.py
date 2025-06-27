@@ -22,6 +22,7 @@ class Gleaner:
         self.base_url = urllib.parse.urlparse(start_url).netloc
         self.de = deque([start_url])
         # Avoid gleaning same pages
+        # Misleading name. Stores all urls visited, or that are present in self.de
         self.visited = [start_url]
 
         self.rate_limiter = rate_limiter
@@ -31,20 +32,29 @@ class Gleaner:
         Performs the BFS
         """
         pbar = tqdm(total=len(self.visited), desc="Scraping", unit=" pages ")
+        failed_urls = []
 
         while len(self.de) > 0:
-            url = self.de.pop()
-            links = self.get_a_links(url)
-            links = self.filter_and_parse_links(links, url)
-            self.visited += links
+            try:
+                url = self.de.pop()
+                links = self.get_a_links(url)
+                links = self.filter_and_parse_links(links, url)
+                self.visited += links
 
-            self.de.extendleft(links)
+                self.de.extendleft(links)
+            except requests.RequestException as e:
+                logging.error(f"Failed to analyze {url}: {e}")
+                failed_urls.append(url)
 
             # Update progress bar
             pbar.total = len(self.visited)
             pbar.update(1)
             pbar.refresh()
         pbar.close()
+
+        if failed_urls:
+            logging.info(f"Failed to process {len(failed_urls)} URLS")
+
         return self.visited
 
     def get_a_links(self, url):
