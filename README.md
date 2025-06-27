@@ -23,16 +23,22 @@ This will
 
 ## Options
 
+For more help on options
+
+```bash
+glean --help
+```
+
 - `-o, --output` - Output file (default: `urls.txt`)
 - `-r, --rps` - Maximum requests per second (default: 10)
 - `-v, --verbose` - Enable verbose output
 
 ## Limitations
 
+- Rate limiter only works for rps >= 1
 - Only follows `<a>`-tag links
 - Doesn't read `robots.txt`
 - No user-agent header
-- Duplication bug
 - Doesn't handle 429 errors (too many requests)
 - Doesn't parse sitemap.xml
 - No export formats beyond `.txt` (json? csv?)
