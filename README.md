@@ -24,6 +24,8 @@ This will
 ## Options
 
 - `-o, --output` - Output file (default: `urls.txt`)
+- `-r, --rps` - Maximum requests per second (default: 10)
+- `-v, --verbose` - Enable verbose output
 
 ## Limitations
 
