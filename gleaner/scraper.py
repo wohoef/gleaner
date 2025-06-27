@@ -35,25 +35,18 @@ class Gleaner:
         failed_urls = []
 
         while len(self.de) > 0:
-            try:
-                url = self.de.pop()
-                links = self.get_a_links(url)
-                links = self.filter_and_parse_links(links, url)
-                self.visited.update(links)
+            url = self.de.pop()
+            links = self.get_a_links(url)
+            links = self.filter_and_parse_links(links, url)
+            self.visited.update(links)
 
-                self.de.extendleft(links)
-            except requests.RequestException as e:
-                logging.error(f"Failed to analyze {url}: {e}")
-                failed_urls.append(url)
+            self.de.extendleft(links)
 
             # Update progress bar
             pbar.total = len(self.visited)
             pbar.update(1)
             pbar.refresh()
         pbar.close()
-
-        if failed_urls:
-            logging.info(f"Failed to process {len(failed_urls)} URLS")
 
         print(f"Done! Found {len(self.visited)} pages")
 
@@ -66,7 +59,12 @@ class Gleaner:
         """
         links = []
         self.rate_limiter.wait()
-        response = requests.get(url)
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+        except requests.RequestException as e:
+            logging.error(f"Failed to analyze {url}: {e}")
+            return []
 
         # Parse page
         soup = BeautifulSoup(response.text, "html.parser")
