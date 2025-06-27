@@ -1,6 +1,7 @@
 import logging
 import urllib
 from collections import deque
+from time import sleep
 
 import requests
 from bs4 import BeautifulSoup
@@ -59,10 +60,19 @@ class Gleaner:
         """
         links = []
         self.rate_limiter.wait()
+        # Try to request page
         try:
             response = requests.get(url)
+
+            # If rate limited, wait a second, then try again
+            if response.status_code == 429:
+                logging.warning(f"Rate limited on {url}")
+
+                sleep(1)
+                response = requests.get(url)
             response.raise_for_status()
         except requests.RequestException as e:
+            # For any request errors, return an empty list
             logging.error(f"Failed to analyze {url}: {e}")
             return []
 
