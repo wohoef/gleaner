@@ -55,6 +55,8 @@ class Gleaner:
         if failed_urls:
             logging.info(f"Failed to process {len(failed_urls)} URLS")
 
+        print(f"Done! Found {len(self.visited)} pages")
+
         return self.visited
 
     def get_a_links(self, url):
