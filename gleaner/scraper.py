@@ -23,7 +23,7 @@ class Gleaner:
         self.de = deque([start_url])
         # Avoid gleaning same pages
         # Misleading name. Stores all urls visited, or that are present in self.de
-        self.visited = [start_url]
+        self.visited = {start_url}
 
         self.rate_limiter = rate_limiter
 
@@ -39,7 +39,7 @@ class Gleaner:
                 url = self.de.pop()
                 links = self.get_a_links(url)
                 links = self.filter_and_parse_links(links, url)
-                self.visited += links
+                self.visited.update(links)
 
                 self.de.extendleft(links)
             except requests.RequestException as e:
